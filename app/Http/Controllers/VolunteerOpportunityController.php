@@ -32,6 +32,11 @@ class VolunteerOpportunityController extends Controller
         $opportunity->location = $request->location;
         $opportunity->save();
 
+        //if request has another request to create another opportunity
+        if ($request->has('create_another')) {
+            return redirect()->route('opportunity.create')->with('success', 'Volunteer opportunity created successfully.');
+        }
+
         return redirect()->route('opportunity.index')->with('success', 'Volunteer opportunity created successfully.');
     }
 
