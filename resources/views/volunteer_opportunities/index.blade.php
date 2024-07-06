@@ -130,7 +130,7 @@
                                             {{ $opportunity->date }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $opportunity->active ? 'Yes' : 'No'}}
+                                            {{ $opportunity->is_active ? 'Yes' : 'No'}}
                                         </td>
                                         <td class="px-6 py-4 flex items-center">
                                             <a href="{{ route('opportunity.show', $opportunity->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-200">

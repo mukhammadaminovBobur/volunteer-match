@@ -57,9 +57,10 @@ class VolunteerOpportunityController extends Controller
         $opportunity->description = $request->description;
         $opportunity->date = $request->date;
         $opportunity->location = $request->location;
+        $opportunity->is_active = $request->is_active == 'on' ? 1 : 0;
         $opportunity->save();
 
-        return redirect()->route('opportunity.show', $opportunity->id)->with('success', 'Volunteer opportunity updated successfully.');
+        return redirect()->route('opportunity.index', $opportunity->id)->with('success', 'Volunteer opportunity updated successfully.');
     }
 
     // Display the specified volunteer opportunity
