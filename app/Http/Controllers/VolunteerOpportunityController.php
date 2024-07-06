@@ -80,6 +80,7 @@ class VolunteerOpportunityController extends Controller
     public function destroy(Request $request)
     {
         $opportunity = VolunteerOpportunity::findOrFail($request->id);
+//        dd($opportunity);
         $opportunity->delete();
 
         return redirect()->route('opportunity.index')->with('success', 'Volunteer opportunity deleted successfully.');
