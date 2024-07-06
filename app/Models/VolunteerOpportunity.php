@@ -24,5 +24,6 @@ class VolunteerOpportunity extends Model
     {
         return $this->hasMany(Application::class);
     }
+
 }
 

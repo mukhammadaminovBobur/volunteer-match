@@ -2,12 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use App\Models\VolunteerOpportunity;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class VolunteerOpportunityController extends Controller
 {
+    // Display a listing of the volunteer opportunities
+    public function index()
+    {
+        $paginate = 5;
+        //search for opportunities
+        if (Auth::user()->role == 'volunteer') {
+            $opportunities = VolunteerOpportunity::where('is_active', 1)->orderby('created_at', 'desc')->paginate($paginate);
+        }elseif(Auth::user()->role == 'nonprofit') {
+            if (request()->has('search') && !empty(request('search'))){
+                $search = request('search');
+                $opportunities = VolunteerOpportunity::where('nonprofit_id', Auth::user()->nonprofit->id)
+                    ->where(function($query) use ($search) {
+                        $query->where('title', 'like', '%'.$search.'%')
+                            ->orWhere('description', 'like', '%'.$search.'%');
+                    })
+                    ->orderby('created_at', 'desc')->paginate($paginate);
+            } else{
+                $opportunities = VolunteerOpportunity::where('nonprofit_id', Auth::user()->nonprofit->id)->orderby('created_at', 'desc')->paginate($paginate);
+            }
+        }
+        return view('volunteer_opportunities.index', compact('opportunities'));
+    }
+
     // Show the form for creating a new volunteer opportunity
     public function create()
     {
@@ -75,17 +99,9 @@ class VolunteerOpportunityController extends Controller
         return view('volunteer_opportunities.show', compact('opportunity'));
     }
 
-    // Display a listing of the volunteer opportunities
-    public function index()
-    {
-        $opportunities = VolunteerOpportunity::all();
-        return view('volunteer_opportunities.index', compact('opportunities'));
-    }
-
     public function destroy(Request $request)
     {
         $opportunity = VolunteerOpportunity::findOrFail($request->id);
-//        dd($opportunity);
         $opportunity->delete();
 
         return redirect()->route('opportunity.index')->with('success', 'Volunteer opportunity deleted successfully.');
