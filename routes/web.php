@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     // Volunteer Opportunities routes
     Route::get('/opportunity/create', [VolunteerOpportunityController::class, 'create'])->name('opportunity.create');
     Route::post('/opportunity', [VolunteerOpportunityController::class, 'store'])->name('opportunity.store');
+    Route::post('/opportunity/delete', [VolunteerOpportunityController::class, 'destroy'])->name('opportunity.destroy');
     Route::get('/opportunity/{id}/edit', [VolunteerOpportunityController::class, 'edit'])->name('opportunity.edit');
     Route::put('/opportunity/{id}', [VolunteerOpportunityController::class, 'update'])->name('opportunity.update');
     Route::get('/opportunity/{id}', [VolunteerOpportunityController::class, 'show'])->name('opportunity.show');

@@ -1,38 +1,58 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Create Volunteer Opportunity') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-    <div class="container">
-        <h2>Create Volunteer Opportunity</h2>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+                    <form method="POST" action="{{ route('opportunity.store') }}">
+                        @csrf
 
-        <form action="{{ route('opportunity.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" name="title" class="form-control" required>
+                        <!-- Title -->
+                        <div class="mt-4">
+                            <x-input-label for="title" :value="__('Title')" />
+                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required />
+                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mt-4">
+                            <x-input-label for="description" :value="__('Description')" />
+                            <x-textarea-input id="description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" required autofocus />
+                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                        </div>
+
+                        <!-- Date -->
+                        <div class="mt-4">
+                            <x-input-label for="date" :value="__('Date')" />
+                            <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" :value="old('date')" required />
+                            <x-input-error :messages="$errors->get('date')" class="mt-2" />
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mt-4">
+                            <x-input-label for="location" :value="__('Location')" />
+                            <x-text-input id="location" class="block mt-1 w-full" type="text" name="location" :value="old('location')" required />
+                            <x-input-error :messages="$errors->get('location')" class="mt-2" />
+                        </div>
+
+
+                        <div class="flex items-center justify-end mt-4">
+                            <x-primary-button class="ms-3">
+                                {{ __('Save') }}
+                            </x-primary-button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea name="description" class="form-control" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" name="date" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" name="location" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Opportunity</button>
-        </form>
+        </div>
     </div>
-@endsection
+</x-app-layout>
+
+

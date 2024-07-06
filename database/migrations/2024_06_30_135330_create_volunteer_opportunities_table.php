@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->date('date');
             $table->string('location');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
 
             $table->foreign('nonprofit_id')->references('id')->on('nonprofits')->onDelete('cascade');

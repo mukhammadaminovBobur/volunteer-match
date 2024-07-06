@@ -32,7 +32,7 @@ class VolunteerOpportunityController extends Controller
         $opportunity->location = $request->location;
         $opportunity->save();
 
-        return redirect()->route('opportunity.show', $opportunity->id)->with('success', 'Volunteer opportunity created successfully.');
+        return redirect()->route('opportunity.index')->with('success', 'Volunteer opportunity created successfully.');
     }
 
     // Show the form for editing the specified volunteer opportunity
@@ -74,5 +74,13 @@ class VolunteerOpportunityController extends Controller
     {
         $opportunities = VolunteerOpportunity::all();
         return view('volunteer_opportunities.index', compact('opportunities'));
+    }
+
+    public function destroy(Request $request)
+    {
+        $opportunity = VolunteerOpportunity::findOrFail($request->id);
+        $opportunity->delete();
+
+        return redirect()->route('opportunity.index')->with('success', 'Volunteer opportunity deleted successfully.');
     }
 }
